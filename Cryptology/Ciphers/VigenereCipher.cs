@@ -46,6 +46,12 @@ namespace Cryptology.Ciphers
         public static string CheckICForLetter(string inputText, byte letterKeySize)
         {
             var str = "";
+            var inputTextSplitted = new string[letterKeySize];
+
+            for (var i = 0; i < inputText.Length; i++)
+            {
+                inputTextSplitted[i % letterKeySize] += inputText[i];
+            }
 
             for (var i = 0; i < letterKeySize; i++)
             {
@@ -54,8 +60,7 @@ namespace Cryptology.Ciphers
 
                 for (sbyte j = 0; j < 26; j++)
                 {
-                    var inputTextCopy = inputText;
-                    var currentIC = CipherHelper.CalculateIC(CipherHelper.TextToLetterDictionary(ShiftCipher.Shift(inputTextCopy, j)));
+                    var currentIC = CipherHelper.CalculateIC(CipherHelper.TextToLetterDictionary(ShiftCipher.Shift(inputTextSplitted[i], j)));
 
                     if (currentIC > maxIC)
                     {
